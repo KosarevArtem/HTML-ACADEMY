@@ -1,0 +1,20 @@
+{
+    "name": "artem/yeticave",
+    "description": "Website for the sale of ski",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Artem\\Yeticave\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "KosarevArtem",
+            "email": "kosarev_artem@inbox.ru"
+        }
+    ],
+    "require": {
+        "symfony/mailer": "^6.0",
+        "swiftmailer/swiftmailer": "^6.3"
+    }
+}
