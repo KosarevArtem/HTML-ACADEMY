@@ -2,8 +2,8 @@
 
 /**
  * Формирует SQL-запрос для получения списка новых лотов от определенной даты, с сортировкой
- * @param string $date Дата в виде строки, в формате 'YYYY-MM-DD'
- * @return string SQL-запрос
+ * @param string $sql_con, $date mysql подключение, Дата в виде строки, в формате 'YYYY-MM-DD'
+ * @return array Массив лотов
  */
 function get_lots_promo($sql_con, $date) {
     $sql = "SELECT lots.id, lots.title, lots.start_price, lots.img, date_finish, categories.cat_name FROM lots 
@@ -22,7 +22,11 @@ function get_lots_promo($sql_con, $date) {
     }
 }
 
-
+/**
+ * Формирует SQL-запрос для получения списка всех открытых лотов определенной категории
+ * @param string $sql_con, $category_id mysql подключение, Id категории
+ * @return array Массив лотов
+ */
 function get_all_lots($sql_con, $category_id) {
     $sql = "SELECT lots.*, categories.cat_name FROM lots
     JOIN categories ON lots.category_id = categories.id
@@ -48,6 +52,20 @@ function get_categories() {
     return "SELECT id, cat_code, cat_name FROM categories;";
 }
 
+$get_cat = mysqli_query($sql_con, get_categories());
+if ($get_cat) {
+    $cats_arr = mysqli_fetch_all($get_cat, MYSQLI_ASSOC);
+} else {
+    $error = mysqli_error($sql_con);
+}
+
+
+
+/**
+ * Формирует SQL-запрос для получения категории через id параметра запроса
+ * @param string $sql_con, mysql подключение
+ * @return array Массив категории
+ */
 function get_cur_category($sql_con) {
     $id = htmlspecialchars($_GET["category"]);
     $sql = "SELECT id, cat_code, cat_name FROM categories
@@ -63,12 +81,6 @@ function get_cur_category($sql_con) {
     }
 }
 
-$get_cat = mysqli_query($sql_con, get_categories());
-if ($get_cat) {
-    $cats_arr = mysqli_fetch_all($get_cat, MYSQLI_ASSOC);
-} else {
-    $error = mysqli_error($sql_con);
-}
 
 /**
  * Формирует SQL-запрос для внесения данных формы
